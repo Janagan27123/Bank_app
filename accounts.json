@@ -1,0 +1,33 @@
+{
+    "users": {
+        "kaji": {
+            "password": "kaji123",
+            "balance": 0.0,
+            "transactions": []
+        },
+        "theepan": {
+            "password": "theepan123",
+            "balance": 0.0,
+            "transactions": []
+        },
+        "nirai": {
+            "password": "nirai123",
+            "balance": 0.0,
+            "transactions": []
+        },
+        "paki": {
+            "password": "paki123",
+            "balance": 0.0,
+            "transactions": []
+        },
+        "jerry": {
+            "password": "jerry123",
+            "balance": 0.0,
+            "transactions": []
+        }
+    },
+    "admin": {
+        "username": "Admin",
+        "password": "UT010657@"
+    }
+}
