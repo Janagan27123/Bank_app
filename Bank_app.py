@@ -4,7 +4,6 @@ from datetime import datetime
 
 Data_File = "accounts.json"
 
-#Load 'or initialize' data
 
 def load_data():
     if not os.path.exists(Data_File):
@@ -35,7 +34,7 @@ def create_account(data):
 def view_all_accounts(data):
     print("\n***All User Accounts***")
     for user in data["users"]:
-        print(f"Username:{user},Balance:Rs{data['users'][user]['balance']:.2f}")
+        print(f"Username:{user}, Balance: ${data['users'][user]['balance']:.2f}")
         print("***********************")
 
 def user_menu(username,data):
@@ -51,7 +50,7 @@ def user_menu(username,data):
         user = data["users"][username]
 
         if choice == '1':
-            print(f"Your balance is: Rs{user}['balance]:.2f")
+            print(f"Your balance is: ${user}['balance]:.2f")
 
         elif choice == '2':
             amount = float(input("Enter Deposit Amount:"))
@@ -77,7 +76,7 @@ def user_menu(username,data):
         elif choice == '4':
             print("\n*** Transaction History ***")
             for t in user["transactions"]:
-                print(f"{t['time']}-{t['type']}:Rs{t['amount']:.2f}")
+                print(f"{t['time']}-{t['type']}:${t['amount']:.2f}")
 
         elif choice == '5':
             break
