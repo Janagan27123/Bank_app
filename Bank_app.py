@@ -7,7 +7,7 @@ Data_File = "accounts.json"
 
 def load_data():
     if not os.path.exists(Data_File):
-        return{"users":{},"admin":{"username":"Admin","password":"UT010657@"}}
+        return{"users":{},"admin":{"username":"UT010657","password":"Admin@123"}}
     with open(Data_File,"r")as file:
         return json.load(file)
     
