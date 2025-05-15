@@ -1,54 +1,29 @@
 {
     "users": {
+        "jana": {
+            "password": "jana123",
+            "balance": 0.0,
+            "transactions": []
+        },
         "kaji": {
             "password": "kaji123",
-            "balance": 1400.0,
+            "balance": 1500.0,
             "transactions": [
                 {
                     "type": "Deposit",
-                    "amount": 5000.0,
-                    "time": "2025-05-11 08:50:57.064004"
+                    "amount": 2000.0,
+                    "time": "2025-05-15 07:33:54.365066"
                 },
                 {
-                    "type": "Withdraw",
-                    "amount": 4000.0,
-                    "time": "2025-05-11 08:51:25.139857"
-                },
-                {
-                    "type": "Deposit",
+                    "type": "Withdrawal",
                     "amount": 500.0,
-                    "time": "2025-05-11 09:12:17.001326"
-                },
-                {
-                    "type": "Withdraw",
-                    "amount": 100.0,
-                    "time": "2025-05-11 09:12:29.829731"
+                    "time": "2025-05-15 07:34:07.532909"
                 }
             ]
-        },
-        "theepan": {
-            "password": "theepan123",
-            "balance": 0.0,
-            "transactions": []
-        },
-        "nirai": {
-            "password": "nirai123",
-            "balance": 0.0,
-            "transactions": []
-        },
-        "paki": {
-            "password": "paki123",
-            "balance": 0.0,
-            "transactions": []
-        },
-        "jerry": {
-            "password": "jerry123",
-            "balance": 0.0,
-            "transactions": []
         }
     },
     "admin": {
-        "username": "Admin",
-        "password": "UT010657@"
+        "username": "UT010657",
+        "password": "admin123"
     }
 }
