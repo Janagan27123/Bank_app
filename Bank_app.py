@@ -1,27 +1,31 @@
+from datetime import datetime
+
+
 with open("account.txt","w") as file:
     file.write('"admin":"UT010657"\n')
     file.write('"pass_word":"admin123"\n')
 
 
- 
-with open('account.txt','r') as file:
-    line1 =file.readline().strip()
-    line2 =file.readline().strip()
-    
-while True:
-    user_id= input("User Id : ")
-    pass_word=input("password : ")
+admin_data = {}
+with open('account.txt', 'r') as file:
+    for line in file:
+        if ":" in line:
+            key, value = line.strip().split(":")
+            admin_data[key.strip('"')] = value.strip('"')
 
-
-    if user_id in line1 and pass_word in line2:
-      print("login succesfuly")
-      break
-    else:
-      print("Invalid userId or Password")
-
+    while True:
+     user_id = input("User Id : ")
+     pass_word = input("Password : ")
+     if user_id == admin_data.get("admin") and pass_word == admin_data.get("pass_word"):
+        print("Login successfully")
+        break
+     else:
+        print("Invalid userId or Password")
+       
 
 user_account = {}
 next_account_number = 15001
+
 
 def create_account():
     global next_account_number
@@ -34,23 +38,28 @@ def create_account():
     except ValueError:
         print("Invalid amount entered.")
         return
-    password = input("create new password : ")
+
+    while True:
+        password = input("Create new password (min 6 characters): ")
+        if len(password) < 6:
+            print("Password too short. Please enter at least 6 characters.")
+        else:
+            break
 
     account_number = next_account_number
     next_account_number += 1
 
+    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     user_account[account_number] = {
         "name": name,
         "balance": initial_balance,
-        "transactions": [("Initial Deposit", initial_balance)],
-        "password" : password
-
+        "transactions": [(f"Initial Deposit on {date}", initial_balance)],
+        "password": password
     }
-    with open("account.txt","a") as file:
-        for key, value in user_account.items():
-            file.write(f"{key}:{value}\n")
 
-
+    with open("account.txt", "a") as file:
+       file.write(f"{account_number}:{user_account[account_number]}\n")
+       
     print(f"Account created successfully. your Account Number is: {account_number}")
 
 
@@ -59,18 +68,22 @@ def deposit():
     try:
         account_number = int(input("Enter account number: "))
         password = input("Enter your password: ")
-        if account_number not in user_account and password not in user_account:
-            print("Account not found.")
-            return
         
+        if account_number not in user_account or user_account[account_number]["password"] != password:
+           print("Account not found or incorrect password.")
+           return
+
         amount = float(input("Enter amount to deposit: "))
         if amount < 0:
             print("Amount must be positive.")
             return
 
         user_account[account_number]["balance"] += amount
-        user_account[account_number]["transactions"].append(("Deposit", amount))
+        
+        date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        user_account[account_number]["transactions"].append((f"Deposit on {date}", amount))
         print("Deposit successful.")
+
     except ValueError:
         print("Invalid input.")
 
@@ -79,19 +92,27 @@ def withdraw_money():
         account_number = int(input("Enter account number: "))
         password = input("Enter your password: ")
 
-        if account_number not in user_account and password not in user_account:
-            print("Account not found.")
-            return
+        
+        if account_number not in user_account or user_account[account_number]["password"] != password:
+           print("Account not found or incorrect password.")
+           return
             
         amount = float(input("Enter amount to withdraw: "))
         
-        if amount > user_account[account_number]["balance"] and amount < 0:
-            print("Insufficient balance.")
-            return
+        
+        if amount < 0:
+           print("Invalid amount.")
+           return
+        if amount > user_account[account_number]["balance"]:
+           print("Insufficient balance.")
+           return
+
 
         user_account[account_number]["balance"] -= amount
-        user_account[account_number]["transactions"].append(("Withdrawal", amount))
+        date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        user_account[account_number]["transactions"].append((f"Withdrawal on {date}", amount))
         print("Withdrawal successful.")
+
     except ValueError:
         print("Invalid input.")
 def balance():
@@ -113,6 +134,7 @@ def Transaction():
             return
         for history, amount in user_account[account_number]["transactions"]:
             print(f"{history}: {amount:.2f}")
+        
     except ValueError:
         print("invalid input")
 
