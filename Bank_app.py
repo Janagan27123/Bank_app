@@ -113,6 +113,11 @@ def withdraw_money():
         user_account[account_number]["transactions"].append((f"Withdrawal on {date}", amount))
         print("Withdrawal successful.")
 
+        # Balance warning
+        if user_account[account_number]["balance"] < 500:
+            print(" Warning: Your balance is below Rs500.")
+
+
     except ValueError:
         print("Invalid input.")
 def balance():
