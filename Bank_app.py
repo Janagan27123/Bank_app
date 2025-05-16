@@ -1,120 +1,153 @@
-import json
-import os
-from datetime import datetime
+with open("account.txt","w") as file:
+    file.write('"admin":"UT010657"\n')
+    file.write('"pass_word":"admin123"\n')
 
-DATA_FILE = "accounts.json" 
 
-# Load or initialize data
-def load_data():
-    if not os.path.exists(DATA_FILE):
-        return {"users": {}, "admin": {"username": "UT010657", "password": "admin123"}}
-    with open(DATA_FILE, "r") as file:
-        return json.load(file)
+ 
+with open('account.txt','r') as file:
+    line1 =file.readline().strip()
+    line2 =file.readline().strip()
     
-def save_data(data):
-        with open(DATA_FILE, "w") as file:
-            json.dump(data, file, indent=4)
-    
-    
-        
-def create_account(data):
-    username = input("Enter new username: ")
-    if username in data["users"]:
-        print("Username already exists.")
-        return
-    password = input("Enter password: ")
-    data["users"][username] = {
-        "password": password,
-        "balance": 0.0,
-        "transactions": []
-    }
-    save_data(data)
-    print("Account created successfully.")
+while True:
+    user_id= input("User Id : ")
+    pass_word=input("password : ")
 
-def view_all_accounts(data):
-    print("\n--- All User Accounts ---")
-    for user in data["users"]:
-        print(f"Username: {user}, Balance: ${data['users'][user]['balance']:.2f}")
-    print("-------------------------")
 
-def user_menu(username, data):
-    while True:
-        print("\n1. View Balance\n2. Deposit\n3. Withdraw\n4. Transaction History\n5. Logout")
-        choice = input("Choose an option: ")
-
-        user = data["users"][username]
-
-        if choice == '1':
-            print(f"Your balance is: ${user['balance']:.2f}")
-        elif choice == '2':
-            amount = float(input("Enter deposit amount: "))
-            user["balance"] += amount
-            user["transactions"].append(
-                {"type": "Deposit", "amount": amount, "time": str(datetime.now())}
-            )
-            save_data(data)
-            print("Deposit successful.")
-        elif choice == '3':
-            amount = float(input("Enter withdrawal amount: "))
-            if amount > user["balance"]:
-                print("Insufficient funds.")
-            else:
-                user["balance"] -= amount
-                user["transactions"].append(
-                    {"type": "Withdrawal", "amount": amount, "time": str(datetime.now())}
-                )
-                save_data(data)
-                print("Withdrawal successful.")
-        elif choice == '4':
-            print("\n--- Transaction History ---")
-            for t in user["transactions"]:
-                print(f"{t['time']} - {t['type']}: ${t['amount']:.2f}")
-        elif choice == '5':
-            break
-        else:
-            print("Invalid option.")
-
-def login(data):
-    username = input("Username: ")
-    password = input("Password: ")
-
-    if username == data["admin"]["username"] and password == data["admin"]["password"]:
-        while True:
-            print("\nAdmin Menu:\n1. Create User Account\n2. View All Accounts\n3. Logout")
-            choice = input("Choose an option: ")
-            if choice == '1':
-                create_account(data)
-            elif choice == '2':
-                view_all_accounts(data)
-            elif choice == '3':
-                break
-            else:
-                print("Invalid option.")
-    elif username in data["users"] and data["users"][username]["password"] == password:
-        user_menu(username, data)
+    if user_id in line1 and pass_word in line2:
+      print("login succesfuly")
+      break
     else:
-        print("Invalid login.")
+      print("Invalid userId or Password")
+
+
+user_account = {}
+next_account_number = 15001
+
+def create_account():
+    global next_account_number
+    name = input("Enter account user name: ")
+    try:
+        initial_balance = float(input("Enter the amount: "))
+        if initial_balance < 0:
+            print("Invalid amount")
+            return
+    except ValueError:
+        print("Invalid amount entered.")
+        return
+    password = input("create new password : ")
+
+    account_number = next_account_number
+    next_account_number += 1
+
+    user_account[account_number] = {
+        "name": name,
+        "balance": initial_balance,
+        "transactions": [("Initial Deposit", initial_balance)],
+        "password" : password
+
+    }
+    with open("account.txt","a") as file:
+        for key, value in user_account.items():
+            file.write(f"{key}:{value}\n")
+
+
+    print(f"Account created successfully. your Account Number is: {account_number}")
+
+
+   
+def deposit():
+    try:
+        account_number = int(input("Enter account number: "))
+        password = input("Enter your password: ")
+        if account_number not in user_account and password not in user_account:
+            print("Account not found.")
+            return
+        
+        amount = float(input("Enter amount to deposit: "))
+        if amount < 0:
+            print("Amount must be positive.")
+            return
+
+        user_account[account_number]["balance"] += amount
+        user_account[account_number]["transactions"].append(("Deposit", amount))
+        print("Deposit successful.")
+    except ValueError:
+        print("Invalid input.")
+
+def withdraw_money():
+    try:
+        account_number = int(input("Enter account number: "))
+        password = input("Enter your password: ")
+
+        if account_number not in user_account and password not in user_account:
+            print("Account not found.")
+            return
+            
+        amount = float(input("Enter amount to withdraw: "))
+        
+        if amount > user_account[account_number]["balance"] and amount < 0:
+            print("Insufficient balance.")
+            return
+
+        user_account[account_number]["balance"] -= amount
+        user_account[account_number]["transactions"].append(("Withdrawal", amount))
+        print("Withdrawal successful.")
+    except ValueError:
+        print("Invalid input.")
+def balance():
+    try:
+        account_number = int(input("Enter the account number: "))
+        if account_number not in user_account:
+            print("invalid account number")
+            return
+        print(f"current balance: {user_account[account_number]['balance']:.2f}")
+    except ValueError:
+        print("invalid input")
+
+
+def Transaction():
+    try:
+        account_number = int(input("Enter the account number: "))
+        if account_number not in user_account:
+            print("invalid account number")
+            return
+        for history, amount in user_account[account_number]["transactions"]:
+            print(f"{history}: {amount:.2f}")
+    except ValueError:
+        print("invalid input")
+
 
 def main():
-    data = load_data()
-    #attemts=0
     while True:
-        print("\n--- Mini ATM Bank App ---")
-        print("1. Login\n2. Exit")
-        choice = input("Choose an option: ")
-        if choice == '1':
-            #while attemts < 3:
-                login(data)
-                '''break
-            else:
-                print("Too many failed attemts.Exiting.")
-                break'''
+        print(
+              "*****MENU*****\n"
+              "1. create account\n"
+              "2. deposit money\n"
+              "3. withdraw money\n"
+              "4. check balance\n"
+              "5. transaction history\n"
+              "6. exit\n"
+              "**************\n"
+            )
+        choice = input("enter your choice (1-6) : ")
 
-        elif choice == '2':
-            print("Goodbye!")
-            break
+        
+        if choice == "1":
+          create_account()
+        elif choice =="2":
+          deposit()
+        elif choice =="3":
+          withdraw_money()
+        elif choice == "4":
+          balance()
+        elif choice == "5":
+          Transaction()
+        elif choice == "6":
+          print("good bye.")
+          break
         else:
-            print("Invalid option.")
+          print("invalid choice. please select number 1-6")
+    
 
 if __name__ == "__main__":
     main()
