@@ -145,7 +145,7 @@ def Transaction():
     except ValueError:
         print("invalid input")
 
-def customer_list():
+def user_list():
     with open('account.txt', 'r') as file:
       for line in file:
         print(line)
@@ -163,7 +163,7 @@ def main():
               "3. withdraw money\n"
               "4. check balance\n"
               "5. transaction history\n"
-              "6. customer list\n"
+              "6. user list\n"
               "7. exit\n"
               "**************\n"
             )
@@ -181,7 +181,7 @@ def main():
         elif choice == "5":
           Transaction()
         elif choice == "6":
-            customer_list()
+            user_list()
         elif choice == "7":
           print("good bye.")
           break
