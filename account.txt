@@ -1,3 +1,2 @@
 "admin":"UT010657"
 "pass_word":"admin123"
-15001:{'name': 'jana', 'balance': 1000.0, 'transactions': [('Initial Deposit on 2025-05-17', 1000.0)], 'password': 'jana123'}

@@ -12,6 +12,7 @@ with open('account.txt', 'r') as file:
         if ":" in line:
             key, value = line.strip().split(":")
             admin_data[key.strip('"')] = value.strip('"')
+    
 
     while True:
      user_id = input("User Id : ")
@@ -148,6 +149,9 @@ def customer_list():
     with open('account.txt', 'r') as file:
       for line in file:
         print(line)
+
+# def change_password():
+#     password.update
 
 
 def main():
