@@ -18,6 +18,7 @@ with open('account.txt', 'r') as file:
      pass_word = input("Password : ")
      if user_id == admin_data.get("admin") and pass_word == admin_data.get("pass_word"):
         print("Login successfully")
+        print("you are admin")
         break
      else:
         print("Invalid userId or Password")
@@ -49,7 +50,7 @@ def create_account():
     account_number = next_account_number
     next_account_number += 1
 
-    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    date = datetime.now().strftime("%Y-%m-%d")
     user_account[account_number] = {
         "name": name,
         "balance": initial_balance,
@@ -80,7 +81,7 @@ def deposit():
 
         user_account[account_number]["balance"] += amount
         
-        date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        date = datetime.now().strftime("%Y-%m-%d")
         user_account[account_number]["transactions"].append((f"Deposit on {date}", amount))
         print("Deposit successful.")
 
@@ -109,7 +110,7 @@ def withdraw_money():
 
 
         user_account[account_number]["balance"] -= amount
-        date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        date = datetime.now().strftime("%Y-%m-%d")
         user_account[account_number]["transactions"].append((f"Withdrawal on {date}", amount))
         print("Withdrawal successful.")
 
@@ -143,6 +144,11 @@ def Transaction():
     except ValueError:
         print("invalid input")
 
+def customer_list():
+    with open('account.txt', 'r') as file:
+      for line in file:
+        print(line)
+
 
 def main():
     while True:
@@ -153,10 +159,11 @@ def main():
               "3. withdraw money\n"
               "4. check balance\n"
               "5. transaction history\n"
-              "6. exit\n"
+              "6. customer list\n"
+              "7. exit\n"
               "**************\n"
             )
-        choice = input("enter your choice (1-6) : ")
+        choice = input("enter your choice (1-7) : ")
 
         
         if choice == "1":
@@ -170,10 +177,12 @@ def main():
         elif choice == "5":
           Transaction()
         elif choice == "6":
+            customer_list()
+        elif choice == "7":
           print("good bye.")
           break
         else:
-          print("invalid choice. please select number 1-6")
+          print("invalid choice. please select number 1-7")
     
 
 if __name__ == "__main__":
