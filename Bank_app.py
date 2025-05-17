@@ -82,8 +82,8 @@ def deposit():
 
         user_account[account_number]["balance"] += amount
         
-        date = datetime.now().strftime("%Y-%m-%d")
-        user_account[account_number]["transactions"].append((f"Deposit on {date}", amount))
+        # date = datetime.now().strftime("%Y-%m-%d")
+        # user_account[account_number]["transactions"].append((f"Deposit on {date}", amount))
         print("Deposit successful.")
 
     except ValueError:
@@ -111,8 +111,8 @@ def withdraw_money():
 
 
         user_account[account_number]["balance"] -= amount
-        date = datetime.now().strftime("%Y-%m-%d")
-        user_account[account_number]["transactions"].append((f"Withdrawal on {date}", amount))
+        # date = datetime.now().strftime("%Y-%m-%d")
+        # user_account[account_number]["transactions"].append((f"Withdrawal on {date}", amount))
         print("Withdrawal successful.")
 
         # Balance warning
